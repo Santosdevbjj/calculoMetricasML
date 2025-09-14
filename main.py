@@ -1,19 +1,22 @@
 # main.py
 
-# Importa as funções do nosso pacote de métricas
 from src.metrics_calculator import (
     calcular_sensibilidade,
     calcular_especificidade,
     calcular_acuracia,
     calcular_precisao,
-    calcular_fscore
+    calcular_fscore,
+    calcular_mcc, # Importa nova função
+    calcular_auc_roc_exemplo, # Importa nova função
+    plotar_metricas_principais, # Importa função de plotagem
+    plotar_matriz_confusao # Importa função de plotagem
 )
 
 def main():
     """
-    Função principal para demonstrar o cálculo das métricas.
+    Função principal para demonstrar o cálculo e visualização das métricas.
     """
-    print("--- Calculando Métricas de Avaliação de Aprendizado ---")
+    print("--- Calculando e Visualizando Métricas de Avaliação de Aprendizado ---")
 
     # Definindo a matriz de confusão arbitrária
     vp = 80  # Verdadeiros Positivos
@@ -32,16 +35,29 @@ def main():
     especificidade = calcular_especificidade(vn, fp)
     acuracia = calcular_acuracia(vp, fn, fp, vn)
     precisao = calcular_precisao(vp, fp)
-    f1 = calcular_fscore(precisao, sensibilidade) # Passamos precisão e sensibilidade já calculadas
+    f1 = calcular_fscore(precisao, sensibilidade)
 
-    # Exibindo os resultados
+    # Calculando novas métricas
+    mcc = calcular_mcc(vp, fn, fp, vn)
+    # A AUC-ROC de exemplo precisa das métricas já calculadas
+    auc_roc_exemplo = calcular_auc_roc_exemplo(sensibilidade, especificidade)
+
+    # Exibindo os resultados textuais
     print("\n--- Resultados das Métricas ---")
     print(f"Sensibilidade (Recall): {sensibilidade:.4f}")
     print(f"Especificidade:         {especificidade:.4f}")
     print(f"Acurácia:               {acuracia:.4f}")
     print(f"Precisão:               {precisao:.4f}")
     print(f"F-score:                {f1:.4f}")
+    print(f"MCC:                    {mcc:.4f}")
+    print(f"AUC-ROC (Exemplo):      {auc_roc_exemplo:.4f}")
     print("\n------------------------------")
+
+    # Gerando visualizações
+    print("\n--- Gerando Visualizações ---")
+    plotar_metricas_principais(vp, fn, fp, vn)
+    plotar_matriz_confusao(vp, fn, fp, vn, classes=['Classe Negativa', 'Classe Positiva']) # Exemplo de nomes de classe personalizados
+    print("------------------------------")
 
 if __name__ == "__main__":
     main()
