@@ -68,7 +68,8 @@ Neste projeto, calculamos as principais métricas para avaliar modelos de classi
 O projeto está organizado da seguinte forma:
 
 
-<img width="961" height="950" alt="Screenshot_20250914-153932" src="https://github.com/user-attachments/assets/24de6c60-1600-4eea-a7b9-b03c72a65002" />
+<img width="1006" height="624" alt="Screenshot_20250914-182906" src="https://github.com/user-attachments/assets/d6eaaaf5-7cf9-4b79-948d-8eac77470fbc" />
+
 
 ---
 
