@@ -100,3 +100,164 @@ if __name__ == '__main__':
     print(f"Acurácia: {acur:.4f}")
     print(f"Precisão: {prec:.4f}")
     print(f"F-score: {f1:.4f}")
+
+
+# ... (código existente das outras funções) ...
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np # Necessário para lidar com arrays de previsões/rótulos
+
+def plotar_metricas_principais(vp: int, fn: int, fp: int, vn: int):
+    """
+    Plota um gráfico de barras comparando Sensibilidade, Especificidade, Acurácia, Precisão e F-score.
+
+    Argumentos:
+        vp, fn, fp, vn (int): Valores da matriz de confusão.
+    """
+    sensibilidade = calcular_sensibilidade(vp, fn)
+    especificidade = calcular_especificidade(vn, fp)
+    acuracia = calcular_acuracia(vp, fn, fp, vn)
+    precisao = calcular_precisao(vp, fp)
+    f1 = calcular_fscore(precisao, sensibilidade)
+
+    metricas = ['Sensibilidade', 'Especificidade', 'Acurácia', 'Precisão', 'F-score']
+    valores = [sensibilidade, especificidade, acuracia, precisao, f1]
+
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x=metricas, y=valores, palette='viridis')
+    plt.title('Comparativo das Principais Métricas de Avaliação')
+    plt.ylabel('Valor')
+    plt.ylim(0, 1) # Métricas de 0 a 1
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.show()
+
+def plotar_matriz_confusao(vp: int, fn: int, fp: int, vn: int, classes: list = ['Negativo', 'Positivo']):
+    """
+    Plota a matriz de confusão como um heatmap.
+
+    Argumentos:
+        vp, fn, fp, vn (int): Valores da matriz de confusão.
+        classes (list): Nomes das classes (ex: ['Não-Fraude', 'Fraude']).
+    """
+    matriz = np.array([[vn, fp], [fn, vp]]) # Ordem: VN, FP, FN, VP para sklearn-like confusion_matrix
+    plt.figure(figsize=(7, 5))
+    sns.heatmap(matriz, annot=True, fmt='d', cmap='Blues',
+                xticklabels=[f'Previsto {c}' for c in classes],
+                yticklabels=[f'Real {c}' for c in classes])
+    plt.title('Matriz de Confusão')
+    plt.xlabel('Previsão')
+    plt.ylabel('Valor Real')
+    plt.show()
+
+# ---
+# Você precisará adaptar as chamadas dessas funções no seu main.py ou nos notebooks.
+# Por exemplo, em main.py:
+# plotar_metricas_principais(vp, fn, fp, vn)
+# plotar_matriz_confusao(vp, fn, fp, vn)
+# ---
+
+# ... (código existente das outras funções e plotagens) ...
+
+def calcular_mcc(vp: int, fn: int, fp: int, vn: int) -> float:
+    """
+    Calcula o Matthews Correlation Coefficient (MCC).
+    Formula: (VP*VN - FP*FN) / sqrt((VP+FP)*(VP+FN)*(VN+FP)*(VN+FN))
+
+    Argumentos:
+        vp, fn, fp, vn (int): Valores da matriz de confusão.
+
+    Retorna:
+        float: O valor do MCC.
+    """
+    num = (vp * vn) - (fp * fn)
+    den = np.sqrt(
+        (vp + fp) * (vp + fn) * (vn + fp) * (vn + fn)
+    )
+
+    if den == 0:
+        return 0.0 # Evita divisão por zero
+    return num / den
+
+def calcular_auc_roc_exemplo(sensibilidade: float, especificidade: float) -> float:
+    """
+    Calcula um valor de exemplo para AUC-ROC.
+    Em um cenário real, isso seria calculado a partir das probabilidades.
+    Esta é uma aproximação muito simplificada para fins de demonstração.
+    Uma forma comum de aproximar é usando a relação com a precisão e recall.
+    Para fins deste exemplo, vamos usar uma fórmula que tenta capturar a ideia,
+    mas lembre-se que a forma correta envolve curvas e integrais.
+
+    Uma maneira de pensar é que AUC é a probabilidade de que um exemplo positivo
+    aleatório tenha uma pontuação maior que um exemplo negativo aleatório.
+
+    Argumentos:
+        sensibilidade (float): Valor de Sensibilidade (Recall).
+        especificidade (float): Valor de Especificidade.
+
+    Retorna:
+        float: Um valor de exemplo para AUC-ROC.
+    """
+    # Nota: Esta é uma simplificação grosseira. O cálculo correto envolve
+    # curva ROC e o cálculo da área sob ela, que precisa de todas as pontuações de probabilidade.
+    # Para fins deste projeto, vamos usar uma aproximação que reflete o quão bem
+    # o modelo separa as classes.
+    # Se sensibilidade = 1 e especificidade = 1, AUC = 1.
+    # Se uma delas for 0, AUC é menor.
+    # Uma fórmula comum para aproximar (em cenários binários simples) pode ser:
+    # (Sensibilidade + Especificidade) / 2, mas isso não é estritamente correto.
+    # Vamos usar uma aproximação mais comum baseada em como a precisão e recall afetam a separação.
+    # Se tivermos um modelo que é bom em distinguir, tanto a sensibilidade quanto (1-especificidade) são baixos.
+    # Uma métrica mais apropriada para *aproximar* AUC usando métricas únicas é a média ponderada
+    # de sensibilidade e especificidade, ou simplesmente usar MCC como um proxy.
+
+    # Para este projeto, vamos calcular de forma simples:
+    # Consideramos que quanto mais alta a sensibilidade E a especificidade, mais perto de 1 é a AUC.
+    # Uma maneira comum de ter um *único número* que relaciona sensibilidade e especificidade
+    # para aproximação é usando a precisão (que já combina VP e FP) e o recall (sensibilidade).
+    # Ou, como uma aproximação simples:
+    # AUC ~ (Sensibilidade + Especificidade) / 2 se os dados forem balanceados.
+    # Se quisermos algo que funcione bem com a matriz, podemos usar MCC como um proxy.
+
+    # Vamos usar o MCC como um indicador de quão bem as classes são separadas.
+    # Para este exemplo, vamos apenas *retornar um valor calculado* de uma forma que
+    # ilustre a ideia, embora não seja o método rigoroso de cálculo de AUC.
+
+    # Em um cenário real, você precisaria de `y_true` e `y_pred_proba`.
+    # Como não temos isso, vamos usar um valor simulado que se alinha com a qualidade das nossas métricas.
+    # Por exemplo, se todas as métricas são perfeitas (1.0), AUC seria ~1.0.
+    # Se as métricas são baixas, AUC seria menor.
+    
+    # Um proxy simples, mas não o cálculo formal:
+    # MCC já é uma boa métrica que considera todos os 4 elementos.
+    # Se quisermos *simular* um valor de AUC baseado em nossas métricas calculadas:
+    # Precisão e Sensibilidade são boas para isso.
+    # `sklearn.metrics.roc_auc_score` é a função correta, mas requer probabilidades.
+    
+    # Para demonstrar o conceito, vamos retornar um valor que reflete a "bondade" geral.
+    # Um modelo ideal teria sensibilidade e especificidade de 1.
+    # Vamos usar uma aproximação que considera ambos:
+    
+    # Para este exemplo, vamos apenas usar uma aproximação simples que funciona com os valores calculados:
+    # Esta é uma forma *muito simplificada* e não a maneira formal de calcular AUC.
+    # A forma correta de calcular AUC envolve as probabilidades previstas.
+    
+    # Se sensibilidade e especificidade são 1, AUC é 1.
+    # Se uma delas é 0, AUC é <= 0.5.
+    
+    # Aproximação: (sensibilidade + especificidade) / 2 é uma heurística comum.
+    # Ou, para um valor mais ligado à correlação:
+    auc_aprox = (sensibilidade + especificidade) / 2
+    
+    # Em um projeto real, você usaria:
+    # from sklearn.metrics import roc_auc_score
+    # auc = roc_auc_score(y_true, y_pred_proba)
+    
+    return auc_aprox
+
+# ---
+# Você precisará adicionar essas novas funções e suas chamadas.
+# ---
+
+
+
