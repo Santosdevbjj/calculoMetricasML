@@ -1,5 +1,10 @@
 # src/metrics_calculator.py
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np # Necessário para lidar com arrays de previsões/rótulos
+
+
 def calcular_sensibilidade(vp: int, fn: int) -> float:
     """
     Calcula a Sensibilidade (Recall) de um modelo.
