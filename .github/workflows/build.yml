@@ -1,4 +1,11 @@
 # .github/workflows/build.yml
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+
 name: CI Pipeline  # Nome do seu workflow
 
 on:
