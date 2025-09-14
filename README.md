@@ -20,6 +20,14 @@ Para a leitura dos valores de VP, VN, FP e FN, será necessário escolher uma ma
 
 # Cálculo de Métricas de Avaliação de Aprendizado
 
+
+[![CI Status](https://github.com/Santosdevbjj/calculoMetricasML/actions/workflows/build.yml/badge.svg)](https://github.com/Santosdevbjj/calculoMetricasML/actions/workflows/build.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Santosdevbjj/calculoMetricasML/blob/main/notebooks/02_Exemplo_Calculo.ipynb) [![Open in Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_pull_requests=true&ref=main&repo=Santosdevbjj/calculoMetricasML)
+
+
+
+---
+
+
 Este projeto tem como objetivo demonstrar o cálculo de métricas fundamentais para a avaliação de modelos de classificação em Machine Learning. Serão implementadas funções em Python para calcular:
 
 * **Sensibilidade (Recall)**
