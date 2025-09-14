@@ -59,5 +59,50 @@ Neste projeto, calculamos as principais métricas para avaliar modelos de classi
 
 ---
 
+## Como Executar o Projeto
+
+1.  **Clone o Repositório:**
+    ```bash
+    git clone [https://github.com/Santosdevbjj/calculoMetricasML.git](https://github.com/Santosdevbjj/calculoMetricasML.git)
+    cd calculoMetricasML
+    ```
+
+2.  **Instale Dependências (Opcional, mas recomendado para notebooks):**
+    Para executar os notebooks, você pode precisar instalar `jupyter`.
+    ```bash
+    pip install jupyter
+    ```
+
+3.  **Execute o Script Principal:**
+    O script `main.py` calcula e imprime as métricas usando uma matriz de confusão arbitrária.
+    ```bash
+    python main.py
+    ```
+
+4.  **Explore os Notebooks:**
+    Para uma exploração interativa dos conceitos e do código, abra os notebooks Jupyter:
+    ```bash
+    jupyter notebook notebooks/01_Matriz_Confusao.ipynb
+    jupyter notebook notebooks/02_Exemplo_Calculo.ipynb
+    ```
+
+5.  **Execute os Testes Unitários:**
+    Para verificar a correção das suas implementações, rode os testes unitários:
+    ```bash
+    python -m unittest discover tests
+    ```
+
+---
+
+## Contribuição
+
+Este projeto é um exemplo educacional. Se você tiver sugestões de melhoria, novas métricas para adicionar, ou encontrar algum bug, sinta-se à vontade para abrir uma *Issue* ou enviar um *Pull Request*.
+
+
+
+--- 
+
+
+
 
 
