@@ -25,7 +25,6 @@ Para a leitura dos valores de VP, VN, FP e FN, será necessário escolher uma ma
 
 
 
----
 
 
 Este projeto tem como objetivo demonstrar o cálculo de métricas fundamentais para a avaliação de modelos de classificação em Machine Learning. Serão implementadas funções em Python para calcular:
