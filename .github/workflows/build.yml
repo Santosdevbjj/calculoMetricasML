@@ -1,0 +1,36 @@
+# .github/workflows/build.yml
+name: CI Pipeline  # Nome do seu workflow
+
+on:
+  push:  # Executa em cada push para a branch principal
+    branches: [ main ]
+  pull_request: # Executa em cada Pull Request para a branch principal
+    branches: [ main ]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest # Ambiente onde o job será executado
+
+    steps:
+    - name: Checkout repository # Baixa o código do seu repositório
+      uses: actions/checkout@v4
+
+    - name: Set up Python # Configura o ambiente Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10' # Use a versão do Python que você prefere ou que seu projeto usa
+
+    - name: Install dependencies # Instala as dependências
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt # Se você tiver um requirements.txt
+        # Ou instale as dependências necessárias explicitamente, como:
+        pip install matplotlib seaborn jupyter numpy
+        # Se você tiver um arquivo requirements.txt, pode criar um:
+        # echo "matplotlib" > requirements.txt
+        # echo "seaborn" >> requirements.txt
+        # echo "jupyter" >> requirements.txt
+        # echo "numpy" >> requirements.txt
+
+    - name: Run tests # Executa os testes unitários
+      run: python -m unittest discover tests
